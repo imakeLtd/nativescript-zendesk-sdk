@@ -1,12 +1,16 @@
-import { Color } from 'tns-core-modules/color/color';
-import { device } from 'tns-core-modules/platform';
-import { topmost } from 'tns-core-modules/ui/frame';
+/// <reference path="node_modules/@nativescript/types/index.d.ts" />
+import { Color } from '@nativescript/core/color';
+import { Device } from '@nativescript/core/platform';
+import { Frame } from '@nativescript/core/ui/frame';
+
 import { AnonUserIdentity, HelpCenterOptions, InitConfig, IosThemeSimple, RequestConfig } from './zendesk-sdk';
 import { ZendeskSdk as ZendeskSdkDefinition } from './zendesk-sdk';
 
 export * from './zendesk-sdk.common';
 
 export class ZendeskSdk implements ZendeskSdkDefinition {
+
+    private constructor() { }
 
     public static initialize(config: InitConfig): typeof ZendeskSdk {
 
@@ -68,9 +72,9 @@ export class ZendeskSdk implements ZendeskSdkDefinition {
         }
 
         const deviceInfo: string = config.addDeviceInfo
-            ? '\n\n' + device.language + '-' + device.region + '\n'
-              + device.manufacturer + ' ' + device.model + '\n' + device.os + ' '
-              + device.osVersion + '(' + device.sdkVersion + ')'
+            ? '\n\n' + Device.language + '-' + Device.region + '\n'
+              + Device.manufacturer + ' ' + Device.model + '\n' + Device.os + ' '
+              + Device.osVersion + '(' + Device.sdkVersion + ')'
             : '';
         ZDKRequests.configure(
             (account: ZDKAccount,
@@ -130,7 +134,7 @@ export class ZendeskSdk implements ZendeskSdkDefinition {
                 if ( items.count > 0 ) {
                     const vc: ZDKArticleViewController = ZDKArticleViewController.alloc()
                         .initWithArticle(items.firstObject);
-                    topmost()
+                    Frame.topmost()
                         .ios
                         .controller
                         .pushViewControllerAnimated(vc, true);
@@ -140,7 +144,7 @@ export class ZendeskSdk implements ZendeskSdkDefinition {
     }
 
     public static createRequest(): void {
-        ZDKRequests.presentRequestCreationWithViewController(topmost().ios.controller);
+        ZDKRequests.presentRequestCreationWithViewController(Frame.topmost().ios.controller);
     }
 
     public static setIosTheme(theme: IosThemeSimple): void {
@@ -185,12 +189,10 @@ export class ZendeskSdk implements ZendeskSdkDefinition {
             ZDKHelpCenter.setNavBarConversationsUIType(ZDKNavBarConversationsUIType.None);
         }
         if ( options.showAsModalForIos != null ? options.showAsModalForIos : false ) {
-            topmost().ios.controller.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
-            ZDKHelpCenter.presentHelpCenterOverviewWithContentModel(topmost().ios.controller, helpCenterContentModel);
+            Frame.topmost().ios.controller.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
+            ZDKHelpCenter.presentHelpCenterOverviewWithContentModel(Frame.topmost().ios.controller, helpCenterContentModel);
         } else {
-            ZDKHelpCenter.pushHelpCenterOverviewWithContentModel(topmost().ios.controller, helpCenterContentModel);
+            ZDKHelpCenter.pushHelpCenterOverviewWithContentModel(Frame.topmost().ios.controller, helpCenterContentModel);
         }
     }
-
-    private constructor() { }
 }

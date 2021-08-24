@@ -1,5 +1,5 @@
-import { device } from 'tns-core-modules/platform';
-import { topmost } from 'tns-core-modules/ui/frame';
+import { Device } from '@nativescript/core/platform';
+import { Frame } from '@nativescript/core/ui/frame';
 import { AnonUserIdentity, HelpCenterOptions, InitConfig, IosThemeSimple, RequestConfig } from './zendesk-sdk';
 
 export * from './zendesk-sdk.common';
@@ -8,10 +8,12 @@ export class ZendeskSdk {
 
     private static _zendeskRequestConfiguration: com.zendesk.sdk.feedback.ZendeskFeedbackConfiguration;
 
+    private constructor() { }
+
     public static initialize(config: InitConfig): typeof ZendeskSdk {
 
         com.zendesk.sdk.network.impl.ZendeskConfig.INSTANCE.init(
-            topmost().android.activity, config.zendeskUrl, config.applicationId, config.clientId,
+            Frame.topmost().android.activity, config.zendeskUrl, config.applicationId, config.clientId,
         );
 
         if ( config.userLocale ) {
@@ -76,10 +78,10 @@ export class ZendeskSdk {
                     return !!config.requestSubject ? config.requestSubject : null;
                 },
                 getAdditionalInfo(): string {
-                    const deviceInfo: string = config.addDeviceInfo ? '\n\n' + device.language + '-' + device.region
-                                                                      + '\n' + device.manufacturer + ' ' + device.model
-                                                                      + '\n' + device.os + ' ' + device.osVersion + '('
-                                                                      + device.sdkVersion + ')' : '';
+                    const deviceInfo: string = config.addDeviceInfo ? '\n\n' + Device.language + '-' + Device.region
+                                                                      + '\n' + Device.manufacturer + ' ' + Device.model
+                                                                      + '\n' + Device.os + ' ' + Device.osVersion + '('
+                                                                      + Device.sdkVersion + ')' : '';
 
                     return !!config.additionalInfo || config.addDeviceInfo
                         ? (!!config.additionalInfo
@@ -99,38 +101,38 @@ export class ZendeskSdk {
 
     public static showHelpCenter(options: HelpCenterOptions = {}): void {
 
-        ZendeskSdk._initHelpCenter(options).show(topmost().android.activity);
+        ZendeskSdk._initHelpCenter(options).show(Frame.topmost().android.activity);
     }
 
     public static showHelpCenterForCategoryIds(categoryIds: Array<number>,
                                                options: HelpCenterOptions = {}): void {
 
-        ZendeskSdk._initHelpCenter(options).withArticlesForCategoryIds(categoryIds).show(topmost().android.activity);
+        ZendeskSdk._initHelpCenter(options).withArticlesForCategoryIds(categoryIds).show(Frame.topmost().android.activity);
     }
 
     public static showHelpCenterForLabelNames(labelNames: Array<string>,
                                               options: HelpCenterOptions = {}): void {
 
-        ZendeskSdk._initHelpCenter(options).withLabelNames(labelNames).show(topmost().android.activity);
+        ZendeskSdk._initHelpCenter(options).withLabelNames(labelNames).show(Frame.topmost().android.activity);
     }
 
     public static showHelpCenterForSectionIds(sectionIds: Array<number>,
                                               options: HelpCenterOptions = {}): void {
 
-        ZendeskSdk._initHelpCenter(options).withArticlesForSectionIds(sectionIds).show(topmost().android.activity);
+        ZendeskSdk._initHelpCenter(options).withArticlesForSectionIds(sectionIds).show(Frame.topmost().android.activity);
     }
 
     public static showArticle(articleId: string): void {
 
         com.zendesk.sdk.support.ViewArticleActivity.startActivity(
-            topmost().android.activity, new com.zendesk.sdk.model.helpcenter.SimpleArticle(long(long(articleId)), ''),
+            Frame.topmost().android.activity, new com.zendesk.sdk.model.helpcenter.SimpleArticle(long(long(~~articleId)), ''),
         );
     }
 
     public static createRequest() {
 
         com.zendesk.sdk.feedback.ui.ContactZendeskActivity
-           .startActivity(topmost().android.activity, ZendeskSdk._zendeskRequestConfiguration);
+           .startActivity(Frame.topmost().android.activity, ZendeskSdk._zendeskRequestConfiguration);
     }
 
     public static setIosTheme(theme: IosThemeSimple): void { }
@@ -153,6 +155,4 @@ export class ZendeskSdk {
 
         return supportActivityBuilder;
     }
-
-    private constructor() { }
 }
