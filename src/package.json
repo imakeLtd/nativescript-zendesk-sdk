@@ -61,12 +61,13 @@
   "homepage": "https://github.com/imakeLtd/nativescript-zendesk-sdk",
   "readmeFilename": "README.md",
   "peerDependencies": {
-    "typescript": ">=2.4.0",
+    "typescript": "~3.9.0",
     "@nativescript/core": "~7.0.0",
     "@nativescript/types": "~7.0.1"
   },
   "devDependencies": {
     "prompt": "^1.0.0",
+    "@nativescript/webpack": "~3.0.0",
     "@nativescript/core": "~7.0.0",
     "@nativescript/types": "~7.0.1",
     "typescript": "~3.9.0",
