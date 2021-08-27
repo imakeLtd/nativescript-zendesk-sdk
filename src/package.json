@@ -2,8 +2,8 @@
   "name": "@imakeltd/zendesk-sdk",
   "version": "0.2.3",
   "description": "Zendesk SDK for NativeScript",
-  "main": "index",
-  "typings": "index.d.ts",
+  "main": "zendesk-sdk",
+  "typings": "zendesk-sdk.d.ts",
   "nativescript": {
     "platforms": {
       "android": "3.2.0",
