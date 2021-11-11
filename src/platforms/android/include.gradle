@@ -11,5 +11,5 @@ repositories {
 }
 
 dependencies {
-    compile 'com.zendesk:sdk:1.11.0.1'
+    implementation 'com.zendesk:sdk:1.11.0.1'
 }
